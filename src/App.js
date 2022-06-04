@@ -6,7 +6,7 @@ import Filter from "./components/Filter/Filter";
 
 const App = () => {
   return (
-    <div className="container h-screen max-w-screen-xl items-center justify-center bg-purple-50">
+    <div className="container h-screen max-w-screen-2xl items-center justify-center bg-purple-50">
       <ProductsProviderReducer>
         <NavBar />
         <Filter />
