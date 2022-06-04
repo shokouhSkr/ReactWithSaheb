@@ -1,55 +1,86 @@
 // rsc
 import React, { useState } from "react";
 import { useProductsActions } from "../Providers/ProductsProviderReducer";
-import Select from "react-select";
+import SelectComponent from "../../common/Select/Select";
+import Search from "../../common/Search/Search";
+
+// ****for library****
+const filterOptions = [
+  { value: "", label: "All" },
+  { value: "XS", label: "XS" },
+  { value: "S", label: "S" },
+  { value: "M", label: "M" },
+  { value: "L", label: "L" },
+  { value: "XL", label: "XL" },
+  { value: "XXL", label: "XXL" },
+];
+
+const sortOptions = [
+  { value: "highest", label: "highest" },
+  { value: "lowest", label: "lowest" },
+];
+
+const nameOptions = [
+  { value: "A-Z", label: "A-Z" },
+  { value: "Z-A", label: "Z-A" },
+];
 
 const Filter = () => {
   const dispatch = useProductsActions();
 
-  const [value, setValue] = useState("");
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("");
+  const [name, setName] = useState("");
 
-  // ****without library****
-  // const changeHandler = (e) => {
-  //   dispatch({ type: "filter", event: e });
-  //   setValue(e.target.value);
-  // };
-
-  const changeHandler = (selectedOption) => {
+  const filterHandler = (selectedOption) => {
     // console.log(selectedOption);
-    dispatch({ type: "filter", selectedOption }); // e همون
-    setValue(selectedOption);
+    dispatch({ type: "filter", selectedOption });
+    dispatch({ type: "sort", selectedOption: sort }); // که وقتی روی سایز ها فیلتر بود، به فیلتر قیمت ها هم همچنان توجه کنه
+    dispatch({ type: "name", selectedOption: name });
+    setFilter(selectedOption);
   };
 
-  // ****for library****
-  const options = [
-    { value: "", lable: "All" },
-    { value: "XS", lable: "XS" },
-    { value: "S", lable: "S" },
-    { value: "M", lable: "M" },
-    { value: "L", lable: "L" },
-    { value: "XL", lable: "XL" },
-    { value: "XXL", lable: "XXL" },
-  ];
+  const sortHandler = (selectedOption) => {
+    dispatch({ type: "sort", selectedOption });
+    setSort(selectedOption);
+  };
+
+  const nameHandler = (selectedOption) => {
+    dispatch({ type: "name", selectedOption });
+    setName(selectedOption);
+  };
 
   return (
-    <div className="mb-2 text-center">
-      <p className="mb-2">filter products base on:</p>
-      <div className="flex items-center justify-center gap-x-2">
-        order by:
-        {/* <select  // ****without library****
-          value={value}
-          onChange={changeHandler}
-          className="rounded border-2 border-purple-300 focus:border-purple-400 focus:outline-none"
-        >
-          <option value="">All</option>
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
-        </select> */}
-        <Select value={value} onChange={changeHandler} options={options} />
+    <div className="mb-2 flex items-center justify-start px-12">
+      <p className="mb-8 mr-10 text-lg font-semibold">filter products base on:</p>
+      <div className="mb-8 flex items-center justify-center gap-x-4">
+        <div className="flex items-center justify-center gap-x-5">
+          <Search filter={filter} />
+
+          {/* filter by size */}
+          <SelectComponent
+            value={filter}
+            onChange={filterHandler}
+            options={filterOptions}
+            title={"filter by price"}
+          />
+
+          {/* sort by price */}
+          <SelectComponent
+            value={sort}
+            onChange={sortHandler}
+            options={sortOptions}
+            title={"sort by price"}
+          />
+
+          {/* sort by name */}
+          <SelectComponent
+            value={name}
+            onChange={nameHandler}
+            options={nameOptions}
+            title={"sort by name"}
+          />
+        </div>
       </div>
     </div>
   );

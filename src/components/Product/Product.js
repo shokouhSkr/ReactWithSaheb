@@ -18,7 +18,7 @@ const Product = ({ onChange, onDecrement, onIncrement, onDelete, product }) => {
     <div className="mx-12 mb-6 flex items-center justify-around rounded-lg border border-purple-400 bg-purple-50 p-8 text-xl">
       <p>
         product name:
-        <span className="ml-2 text-purple-800">{product.title}</span> course
+        <span className="ml-2 text-purple-800">{product.title}</span>
       </p>
       <p>
         product price:
